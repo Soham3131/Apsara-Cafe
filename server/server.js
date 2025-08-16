@@ -72,18 +72,13 @@ app.use(express.json());
 
 // ✅ Allowed origins (local + deployed frontend)
 const allowedOrigins = [
-  "http://localhost:3000",           // local React dev
-  "https://apsara-cafe.vercel.app",  // deployed frontend
+  "http://localhost:3000",
+  "https://apsara-cafe.vercel.app",
 ];
 
 // ✅ CORS middleware (supports cookies + credentials)
+// Use only one cors middleware, do NOT add app.options("*") separately
 app.use(cors({
-  origin: allowedOrigins,
-  credentials: true, // important for cookies (JWT in cookie/session)
-}));
-
-// ✅ Handle preflight OPTIONS requests for all routes
-app.options("*", cors({
   origin: allowedOrigins,
   credentials: true,
 }));
