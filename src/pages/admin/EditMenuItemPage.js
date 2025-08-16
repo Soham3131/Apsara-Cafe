@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import API from '../../api';
 
 const EditMenuItemPage = () => {
     // Get the item ID from the URL (e.g., /admin/menu/edit/12345)
@@ -19,7 +20,7 @@ const EditMenuItemPage = () => {
     useEffect(() => {
         const fetchItem = async () => {
             try {
-                const { data } = await axios.get(`http://localhost:5000/api/menu/${id}`);
+                const { data } = await API.get(`/menu/${id}`);
                 setFormData({ name: data.name, description: data.description, category: data.category });
                 setPriceData({
                     s_price: data.sizes?.S || data.price || '',
@@ -80,7 +81,7 @@ const EditMenuItemPage = () => {
             const userInfo = JSON.parse(localStorage.getItem('userInfo'));
             const config = { headers: { 'Content-Type': 'multipart/form-data', Authorization: `Bearer ${userInfo.token}` } };
             
-            await axios.put(`http://localhost:5000/api/menu/${id}`, uploadData, config);
+            await API.put(`/menu/${id}`, uploadData, config);
             
             toast.dismiss(loadingToast);
             toast.success('Item updated successfully!');
