@@ -16,6 +16,8 @@ import DashboardPage from './pages/admin/DashboardPage';
 import AdminOrdersPage from './pages/admin/AdminOrdersPage';
 import AdminMenuPage from './pages/admin/AdminMenuPage';
 import CartPage from "./pages/CartPage"
+import EditMenuItemPage from './pages/admin/EditMenuItemPage';
+import Footer from './components/Footer';
 
 const HomePage = () => <Hero />;
 
@@ -23,7 +25,9 @@ function App() {
   return (
     <Router>
       <Navbar />
+   
       <Toaster position="top-right" />
+       
       <main>
         <Routes>
           {/* Public Routes */}
@@ -40,9 +44,11 @@ function App() {
                 <Route path="dashboard" element={<DashboardPage />} />
                 <Route path="orders" element={<AdminOrdersPage />} />
                 <Route path="menu" element={<AdminMenuPage />} />
+                <Route path="menu/edit/:id" element={<EditMenuItemPage />} />
             </Route>
           </Route>
         </Routes>
+          <Footer/>
       </main>
     </Router>
   );
