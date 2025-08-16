@@ -96,7 +96,7 @@ const MenuPage = () => {
     const fetchMenu = async () => {
       try {
         setLoading(true);
-        const { data } = await axios.get('/api/menu');
+        const { data } = await API.get('/api/menu');
         setMenuItems(data);
         // NEW: Automatically get unique categories from the data
         const uniqueCategories = ['All', ...new Set(data.map(item => item.category))];

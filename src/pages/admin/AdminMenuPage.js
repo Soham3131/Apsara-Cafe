@@ -72,7 +72,7 @@ const AdminMenuPage = () => {
                     Authorization: `Bearer ${userInfo.token}` 
                 } 
             };
-            await axios.API('/api/menu', uploadData, config);
+            await API.post('/api/menu', uploadData, config);
             
             toast.dismiss(loadingToast);
             toast.success('Item added successfully!');
