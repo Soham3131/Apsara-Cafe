@@ -235,7 +235,7 @@ const Navbar = () => {
                 <div className="container mx-auto px-4 sm:px-6 py-3 flex justify-between items-center">
                     {/* 2. REPLACE the SVG with an <img> tag */}
                     <Link to="/" onClick={closeMobileMenu} className="flex items-center gap-2 transition-transform hover:scale-105 z-50">
-                        <img src={logo} alt="Apsara Cafe Logo" className="h-[5rem] w-auto" />
+                        <img src={logo} alt="Apsara Cafe Logo" className="h-[4rem] w-auto" />
                         {/* <span className="text-2xl font-bold text-amber-900 hidden sm:block">Apsara Cafe</span> */}
                     </Link>
 
