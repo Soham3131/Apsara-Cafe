@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import API from '../../api';
 
 const AdminOrdersPage = () => {
     const [allOrders, setAllOrders] = useState([]);
@@ -16,7 +17,7 @@ const AdminOrdersPage = () => {
             setLoading(true);
             const userInfo = JSON.parse(localStorage.getItem('userInfo'));
             const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
-            const { data } = await axios.get('http://localhost:5000/api/orders', config);
+            const { data } = await API.get('/api/orders', config);
             setAllOrders(data);
             setLoading(false);
         } catch (error) {
@@ -53,7 +54,7 @@ const AdminOrdersPage = () => {
         try {
             const userInfo = JSON.parse(localStorage.getItem('userInfo'));
             const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
-            const { data: updatedOrder } = await axios.put(`http://localhost:5000/api/orders/${order._id}/status`, { status: newStatus }, config);
+            const { data: updatedOrder } = await API.put(`/api/orders/${order._id}/status`, { status: newStatus }, config);
             toast.success(`Order #${order.orderNumber} status updated!`);
             setAllOrders(prev => prev.map(o => o._id === order._id ? updatedOrder : o));
         } catch (error) {
@@ -80,7 +81,7 @@ const AdminOrdersPage = () => {
             const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
             const paymentId = order.paymentDetails.paymentId;
             
-            const { data } = await axios.post(`http://localhost:5000/api/orders/${paymentId}/refund`, { 
+            const { data } = await API.post(`/api/orders/${paymentId}/refund`, { 
                 amount: refundAmount, 
                 notes: refundNotes 
             }, config);

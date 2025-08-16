@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import API from '../api';
 
 const MyOrdersPage = () => {
     const [orders, setOrders] = useState([]);
@@ -25,7 +26,7 @@ const MyOrdersPage = () => {
                 };
                 
                 setLoading(true);
-                const { data } = await axios.get('http://localhost:5000/api/orders/myorders', config);
+                const { data } = await API.get('/api/orders/myorders', config);
                 setOrders(data);
                 setLoading(false);
             } catch (error) {

@@ -15,7 +15,7 @@ const LoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/login', formData);
+      const response = await axios.post('/api/auth/login', formData);
       toast.success('Logged in successfully!');
       localStorage.setItem('userInfo', JSON.stringify(response.data));
       navigate('/menu'); // Redirect to menu page

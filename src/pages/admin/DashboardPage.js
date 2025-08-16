@@ -4,6 +4,7 @@ import toast from 'react-hot-toast';
 import { Link } from 'react-router-dom';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
+import API from '../../api';
 
 // Register Chart.js components
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
@@ -54,8 +55,8 @@ const DashboardPage = () => {
             };
             
             const [statsResponse, ordersResponse] = await Promise.all([
-                axios.get('http://localhost:5000/api/orders/stats', config),
-                axios.get('http://localhost:5000/api/orders', config)
+                API.get('/api/orders/stats', config),
+                API.get('/api/orders', config)
             ]);
 
             setStats(statsResponse.data);

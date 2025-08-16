@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { useCart } from '../context/CartContext';
-
+import API from '../api';
 // === UPDATED AND FIXED MenuItemCard Component ===
 const MenuItemCard = ({ item }) => {
     const { addToCart } = useCart();
@@ -96,7 +96,7 @@ const MenuPage = () => {
     const fetchMenu = async () => {
       try {
         setLoading(true);
-        const { data } = await axios.get('http://localhost:5000/api/menu');
+        const { data } = await axios.get('/api/menu');
         setMenuItems(data);
         // NEW: Automatically get unique categories from the data
         const uniqueCategories = ['All', ...new Set(data.map(item => item.category))];
