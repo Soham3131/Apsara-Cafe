@@ -350,6 +350,7 @@ const AdminMenuPage = () => {
                 </div>
             </div>
         </div>
+        
     );
 };
 

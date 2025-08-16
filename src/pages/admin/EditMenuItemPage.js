@@ -1,22 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { useParams, useNavigate, Link } from 'react-router-dom';
+import API from '../../api'; // Using your central API client
 import toast from 'react-hot-toast';
-import API from '../../api';
 
 const EditMenuItemPage = () => {
-    // Get the item ID from the URL (e.g., /admin/menu/edit/12345)
-    const { id } = useParams();
+    const { id } = useParams(); // Gets the item's ID from the URL
     const navigate = useNavigate();
 
-    // State to hold form data, prices, and the image file/preview
     const [formData, setFormData] = useState({ name: '', description: '', category: '' });
     const [priceData, setPriceData] = useState({ s_price: '', m_price: '', l_price: '' });
     const [image, setImage] = useState(null);
     const [imagePreview, setImagePreview] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [loading, setLoading] = useState(true);
 
-    // Fetch the specific menu item's data when the page loads
     useEffect(() => {
         const fetchItem = async () => {
             try {
@@ -27,27 +24,26 @@ const EditMenuItemPage = () => {
                     m_price: data.sizes?.M || '',
                     l_price: data.sizes?.L || ''
                 });
-                setImagePreview(data.imageUrl); // Set the existing image for preview
+                setImagePreview(data.imageUrl);
+                setLoading(false);
             } catch (error) {
                 toast.error("Could not fetch item details.");
-                navigate('/admin/menu'); // Go back if item not found
+                navigate('/admin/menu');
             }
         };
         fetchItem();
     }, [id, navigate]);
 
-    // Handlers for form input changes
     const handleInputChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
     const handlePriceChange = e => setPriceData({ ...priceData, [e.target.name]: e.target.value });
     const handleFileChange = e => {
         const file = e.target.files[0];
         if (file) {
             setImage(file);
-            setImagePreview(URL.createObjectURL(file)); // Create a temporary URL for the new image preview
+            setImagePreview(URL.createObjectURL(file));
         }
     };
 
-    // Main function to handle the update submission
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (isSubmitting) return;
@@ -66,8 +62,8 @@ const EditMenuItemPage = () => {
         uploadData.append('description', formData.description);
         uploadData.append('category', formData.category);
         uploadData.append('price', basePrice);
-        if (image) {
-            uploadData.append('image', image); // Only append image if a new one was selected
+        if (image) { // Only append the image if a new one was selected
+            uploadData.append('image', image);
         }
         
         const sizes = {
@@ -78,14 +74,14 @@ const EditMenuItemPage = () => {
         uploadData.append('sizes', JSON.stringify(sizes));
 
         try {
-            const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-            const config = { headers: { 'Content-Type': 'multipart/form-data', Authorization: `Bearer ${userInfo.token}` } };
-            
-            await API.put(`/menu/${id}`, uploadData, config);
+            // The central API client automatically adds the token
+            await API.put(`/menu/${id}`, uploadData, {
+                headers: { 'Content-Type': 'multipart/form-data' }
+            });
             
             toast.dismiss(loadingToast);
             toast.success('Item updated successfully!');
-            navigate('/admin/menu'); // Navigate back to the main menu list after success
+            navigate('/admin/menu'); // Navigate back to the main menu list
         } catch (error) {
             toast.dismiss(loadingToast);
             toast.error(error.response?.data?.message || 'Failed to update item.');
@@ -94,19 +90,29 @@ const EditMenuItemPage = () => {
         }
     };
 
+    if (loading) {
+        return <div className="text-center p-10 font-semibold">Loading item details...</div>;
+    }
+
     return (
         <div>
-            <h1 className="text-4xl font-extrabold text-amber-900 mb-8">Edit Menu Item</h1>
+            <div className="flex items-center gap-4 mb-8">
+                <Link to="/admin/menu" className="text-amber-800 hover:text-amber-900">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                    </svg>
+                </Link>
+                <h1 className="text-4xl font-extrabold text-amber-900">Edit Menu Item</h1>
+            </div>
             
             <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    {/* Left Side: Image Preview */}
                     <div className="md:col-span-1">
                         <h3 className="font-bold text-lg mb-2">Item Image</h3>
-                        {imagePreview && <img src={imagePreview} alt="Item Preview" className="w-full h-auto object-cover rounded-md mb-4" />}
+                        {imagePreview && <img src={imagePreview} alt="Item Preview" className="w-full h-auto object-cover rounded-md mb-4 border" />}
                         <input type="file" name="image" onChange={handleFileChange} accept="image/*" className="p-2 border rounded-md w-full file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-amber-50 file:text-amber-700 hover:file:bg-amber-100"/>
+                        <p className="text-xs text-gray-500 mt-2">Select a new file to replace the current image.</p>
                     </div>
-                    {/* Right Side: Details & Pricing */}
                     <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="space-y-4">
                              <input type="text" name="name" placeholder="Item Name" value={formData.name} onChange={handleInputChange} className="p-3 border rounded-md w-full" required/>

@@ -1,7 +1,7 @@
 // routes/menuRoutes.js
 const express = require('express');
 const router = express.Router();
-const { getMenuItems, addMenuItem, updateMenuItem, deleteMenuItem } = require('../controllers/menuController');
+const { getMenuItems, addMenuItem, updateMenuItem, deleteMenuItem ,getMenuItemById} = require('../controllers/menuController');
 const { protect, admin } = require('../middleware/authMiddleware');
 const upload = require("../utils/Cloudinary")
 // @route   GET /api/menu
@@ -23,5 +23,6 @@ router.put('/:id', protect, admin, upload.single('image'), updateMenuItem);
 // @desc    Delete a menu item
 // @access  Private/Admin
 router.delete('/:id', protect, admin, deleteMenuItem);
+router.get('/:id', getMenuItemById);
 
 module.exports = router;

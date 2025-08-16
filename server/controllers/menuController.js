@@ -105,3 +105,18 @@ exports.deleteMenuItem = async (req, res) => {
     res.status(500).json({ message: 'Server Error' });
   }
 };
+
+// Add this new function to menuController.js
+
+exports.getMenuItemById = async (req, res) => {
+    try {
+        const menuItem = await MenuItem.findById(req.params.id);
+        if (menuItem) {
+            res.json(menuItem);
+        } else {
+            res.status(404).json({ message: 'Menu item not found' });
+        }
+    } catch (error) {
+        res.status(500).json({ message: 'Server Error' });
+    }
+};
