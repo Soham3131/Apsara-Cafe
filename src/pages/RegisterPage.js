@@ -16,7 +16,7 @@ const RegisterPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await API.post('/api/auth/register', formData);
+      const response = await API.post('/auth/register', formData);
       toast.success('Registration successful! Welcome!');
       // Optionally store user info/token in localStorage
       localStorage.setItem('userInfo', JSON.stringify(response.data));

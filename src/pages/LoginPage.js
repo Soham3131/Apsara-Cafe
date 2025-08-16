@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
+import API from '../api';
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
@@ -15,7 +16,7 @@ const LoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('/api/auth/login', formData);
+      const response = await API.post('/auth/login', formData);
       toast.success('Logged in successfully!');
       localStorage.setItem('userInfo', JSON.stringify(response.data));
       navigate('/menu'); // Redirect to menu page

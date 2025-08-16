@@ -26,7 +26,7 @@ const MyOrdersPage = () => {
                 };
                 
                 setLoading(true);
-                const { data } = await API.get('/api/orders/myorders', config);
+                const { data } = await API.get('/orders/myorders', config);
                 setOrders(data);
                 setLoading(false);
             } catch (error) {
