@@ -133,7 +133,7 @@ const Navbar = () => {
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
 
   // Updated link styles with background
-  const linkStyle = "relative text-white  font-semibold px-4 py-2 rounded-md hover:bg-amber-200 transition-colors w-full text-center";
+  const linkStyle = "relative text-black  font-semibold px-4 py-2 rounded-md hover:bg-amber-200 transition-colors w-full text-center";
   const activeLinkStyle = "relative text-amber-900 font-semibold px-4 py-2 rounded-md bg-amber-300 w-full text-center";
 
   const navLinks = (

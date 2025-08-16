@@ -40,7 +40,7 @@ const CartPage = () => {
         try {
             // 1. Create a Razorpay Order from our backend
             const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
-            const { data: order } = await API.post('/api/orders/create-razorpay-order', { amount: totalPrice * 100 }, config);
+            const { data: order } = await API.post('/orders/create-razorpay-order', { amount: totalPrice * 100 }, config);
 
             // 2. Configure Razorpay options
             const options = {
@@ -64,7 +64,7 @@ const CartPage = () => {
                     };
 
                     // 4. Save the final order to our database
-                    await API.post('/api/orders', orderPayload, config);
+                    await API.post('/orders', orderPayload, config);
                     
                     toast.success('Order placed successfully!');
                     clearCart();

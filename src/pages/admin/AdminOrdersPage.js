@@ -17,7 +17,7 @@ const AdminOrdersPage = () => {
             setLoading(true);
             const userInfo = JSON.parse(localStorage.getItem('userInfo'));
             const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
-            const { data } = await API.get('/api/orders', config);
+            const { data } = await API.get('/orders', config);
             setAllOrders(data);
             setLoading(false);
         } catch (error) {
@@ -54,7 +54,7 @@ const AdminOrdersPage = () => {
         try {
             const userInfo = JSON.parse(localStorage.getItem('userInfo'));
             const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
-            const { data: updatedOrder } = await API.put(`/api/orders/${order._id}/status`, { status: newStatus }, config);
+            const { data: updatedOrder } = await API.put(`/orders/${order._id}/status`, { status: newStatus }, config);
             toast.success(`Order #${order.orderNumber} status updated!`);
             setAllOrders(prev => prev.map(o => o._id === order._id ? updatedOrder : o));
         } catch (error) {
@@ -81,7 +81,7 @@ const AdminOrdersPage = () => {
             const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
             const paymentId = order.paymentDetails.paymentId;
             
-            const { data } = await API.post(`/api/orders/${paymentId}/refund`, { 
+            const { data } = await API.post(`/orders/${paymentId}/refund`, { 
                 amount: refundAmount, 
                 notes: refundNotes 
             }, config);

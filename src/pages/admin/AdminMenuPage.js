@@ -13,7 +13,7 @@ const AdminMenuPage = () => {
     // Fetches all menu items to display in the list
     const fetchMenu = async () => {
         try {
-            const { data } = await API.get('/api/menu');
+            const { data } = await API.get('/menu');
             setMenuItems(data);
         } catch (error) {
             console.error("Failed to fetch menu items:", error);
@@ -72,7 +72,7 @@ const AdminMenuPage = () => {
                     Authorization: `Bearer ${userInfo.token}` 
                 } 
             };
-            await API.post('/api/menu', uploadData, config);
+            await API.post('/menu', uploadData, config);
             
             toast.dismiss(loadingToast);
             toast.success('Item added successfully!');

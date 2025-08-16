@@ -55,8 +55,8 @@ const DashboardPage = () => {
             };
             
             const [statsResponse, ordersResponse] = await Promise.all([
-                API.get('/api/orders/stats', config),
-                API.get('/api/orders', config)
+                API.get('/orders/stats', config),
+                API.get('/orders', config)
             ]);
 
             setStats(statsResponse.data);

@@ -53,14 +53,13 @@
 // app.listen(PORT, () => {
 //   console.log(`Server running on port ${PORT}`);
 // });
-// server.js
 const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const connectDB = require("./config/db");
 const multer = require("multer");
 
-// Load env vars
+// Load environment variables
 dotenv.config();
 
 // Connect to database
@@ -73,25 +72,21 @@ app.use(express.json());
 
 // ✅ Allowed origins (local + deployed frontend)
 const allowedOrigins = [
-  "http://localhost:3000",              // local React dev
-  "https://apsara-cafe.vercel.app",     // deployed frontend
+  "http://localhost:3000",           // local React dev
+  "https://apsara-cafe.vercel.app",  // deployed frontend
 ];
 
 // ✅ CORS middleware (supports cookies + credentials)
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      // Allow requests with no origin (like mobile apps or curl)
-      if (!origin) return callback(null, true);
-      if (allowedOrigins.includes(origin)) {
-        return callback(null, true);
-      } else {
-        return callback(new Error("Not allowed by CORS"));
-      }
-    },
-    credentials: true, // important for cookies (JWT in cookie/session)
-  })
-);
+app.use(cors({
+  origin: allowedOrigins,
+  credentials: true, // important for cookies (JWT in cookie/session)
+}));
+
+// ✅ Handle preflight OPTIONS requests for all routes
+app.options("*", cors({
+  origin: allowedOrigins,
+  credentials: true,
+}));
 
 // Mount routers
 app.use("/api/auth", require("./routes/authRoutes"));
@@ -108,14 +103,10 @@ app.get("/", (req, res) => {
 app.use((err, req, res, next) => {
   if (err instanceof multer.MulterError) {
     console.error("!!! MULTER ERROR CAUGHT !!!", err);
-    return res
-      .status(400)
-      .json({ message: `File upload error: ${err.message}` });
+    return res.status(400).json({ message: `File upload error: ${err.message}` });
   } else if (err) {
     console.error("!!! SERVER ERROR !!!", err);
-    return res
-      .status(500)
-      .json({ message: `An unexpected error occurred: ${err.message}` });
+    return res.status(500).json({ message: `An unexpected error occurred: ${err.message}` });
   }
   next();
 });
