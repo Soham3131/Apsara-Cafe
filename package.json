@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.11.0",
     "chart.js": "^4.5.0",
+    "gsap": "^3.13.0",
     "link": "^2.1.1",
     "lucide-react": "^0.483.0",
     "razorpay": "^2.9.6",
